@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}Learn to Automate Systems - Shariq Shaukat{% endblock title %}
+{% block body %}
+{% load static %}
+<link rel="stylesheet" href="{% static "css/style.css" %}">
+  
+
+<div class="container">
+
+<!-- Caraousel -->
+    <div class="row m-auto mt-5">
+      <div class="col mx-auto text-center text-lg-start">
+        <h2 class="fs-3 fw-semibold md:fs-4">
+          Welcome to <br>
+          <span class="text-primary fs-2">
+            Shariq Shaukat
+          </span>
+        </h2>
+        <h4 class="text-xl font-semibold text-gray-800 md:text-2xl dark:text-white">
+          Learn <span id="animatedText" class="text-primary">Anything</span>
+          <span id="animatedCursor" aria-hidden="true" >|</span></span>
+        </h4>
+        <p class="mt-2 small text-secondary">Confused on which course to take? I have got you covered. Browse courses and find out the best course for you. It's free! This channel is my attempt to teach basics and those coding and DevOps techniques to people in a short time which took me ages to learn.</p>
+        <button type="button" class="btn btn-dark mb-2">Free Courses</button>
+        <button type="button" class="btn btn-secondary mb-2">Explore Blog</button>
+      </div>
+      <!-- This div is hidden in smaller screens -->
+      
+      <div class="col m-auto d-none d-lg-block lg:w-1/2">
+        {% for image in caraousel %}
+          <img src="{{ image.image.url }}" alt="" style="clip-path:polygon(10% 0px, 100% 0%, 100% 100%, 0px 100%)" class="img-fluid">
+        {% endfor %}
+      </div>
+      
+    </div>
+
+<!-- List -->
+<h2 class="fs-2 fw-semibold text-center justify-content-center m-4">Recommended Courses</h2>
+<div class="row justify-content-center m-auto">
+  {% for rcourse in rcourses %}
+    <div class="col-md-4 mb-4">
+      <div class="card shadow m-auto" style="width: 18rem;">
+        <img src="{{ rcourse.image.url }}" class="card-img-top" alt="{{ rcourse.title }}">
+        <div class="card-body">
+          <span class="fw-light fs-6">Free Course</span> 
+          <h5 class="card-title fw-semibold">{{ rcourse.title }}</h5>
+          <p class="card-text text-secondary-emphasis fw-medium">{{ rcourse.description }}</p>
+          <a href="#" class="btn btn-primary">Start Watching</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+
+<!-- testimonial -->
+<h2 class="fs-2 fw-semibold text-center justify-content-center m-4">Testimonials</h2>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card mb-4 bg-body-secondary text-emphasis-light" >
+      <div class="card-body d-flex flex-column justify-content-center" style="height: 15rem;">
+        <p class="card-text fw-semibold">"I don't have words to thank this man, I'm really grateful to have this channel and website in my daily routine. If you're a mere beginner, then you can trust this guy and can put your time into his content. I can assure you that it'll be worth it."</p>
+      </div>
+      <p class="card-text text-end m-2"><em>- John Doe</em></p>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card mb-4 bg-body-secondary text-emphasis-light">
+      <div class="card-body d-flex flex-column justify-content-center" style="height: 15rem;">
+        <p class="card-text fw-semibold">"For everyone who wants to level up their #Coding and #Dev skills - seriously, this channel is for you! Both basic and advanced stacks are covered on this channel, and one can learn according to his skill levels. And the icing on the cake is, everything is available for free."</p>
+      </div>
+      <p class="card-text text-end m-2"><em>- Jane Smith</em></p>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
+<script src="{% static "js/script.js" %}"></script>
+{% endblock body %}
