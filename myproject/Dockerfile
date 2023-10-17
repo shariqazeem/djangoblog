@@ -18,6 +18,9 @@ RUN pip install -r requirements.txt
 # Install Gunicorn
 RUN pip install gunicorn
 
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
 # Expose the port your Django application is running on (e.g., 8000)
 EXPOSE 8000
 
