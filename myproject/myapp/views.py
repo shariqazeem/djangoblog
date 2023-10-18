@@ -2,13 +2,14 @@ from django.shortcuts import render, HttpResponse,redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Course, RCourse, Caraousel, Comment
+from .models import Course, RCourse, Caraousel, Comment, ImageModel
 
 # Create your views here.
 def index(request):
     rcourses = RCourse.objects.all()
-    caraousel = Caraousel.objects.all()
+    caraousel = Caraousel.objects.all()  # Retrieve the first image from the Caraousel model
     return render(request, 'index.html', {'rcourses': rcourses, 'caraousel': caraousel})
+
 
 
 def LoginPage(request):
@@ -79,6 +80,10 @@ def add_comment(request, course_title):
             Comment.objects.create(course=course, text=text, username=username)
 
     return redirect('watch_course', course_title=course.title)
+
+def ContactPage(request):
+    image = ImageModel.objects.first()
+    return render(request, 'contact.html',{'image':image})
 
 
 

@@ -32,6 +32,12 @@ class Caraousel(models.Model):
     def __str__(self):
         return str(self.image)
     
+class ImageModel(models.Model):
+    image = models.ImageField(upload_to='images')  # Define the path where the images will be stored
+
+    def __str__(self):
+        return str(self.image)
+    
 class Comment(models.Model):
     course = models.ForeignKey(RCourse, on_delete=models.CASCADE)
     text = models.TextField()
