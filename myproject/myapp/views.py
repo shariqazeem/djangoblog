@@ -1,8 +1,8 @@
-from django.shortcuts import render, HttpResponse,redirect
+from django.shortcuts import render, HttpResponse,redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Course, RCourse, Caraousel
+from .models import Course, RCourse, Caraousel, Comment
 
 # Create your views here.
 def index(request):
@@ -57,5 +57,29 @@ def LogoutPage(request):
 def CoursesPage(request):
     courses = Course.objects.all()
     return render(request, 'courses.html', {'courses': courses})
+
+def watch_course(request, course_title):
+    course = get_object_or_404(RCourse, title=course_title)
+    comments = Comment.objects.filter(course=course)  # If you have a Comment model
+    context = {
+        'course': course,
+        'comments': comments,
+    }
+    return render(request, 'watch_course.html', context)
+
+
+def add_comment(request, course_title):
+    course = get_object_or_404(RCourse, title=course_title)
+
+    if request.method == 'POST':
+        text = request.POST.get('comment_text')
+
+        if request.user.is_authenticated:
+            username = request.user.username
+            Comment.objects.create(course=course, text=text, username=username)
+
+    return redirect('watch_course', course_title=course.title)
+
+
 
 

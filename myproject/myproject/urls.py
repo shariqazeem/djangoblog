@@ -29,6 +29,9 @@ urlpatterns = [
     path('login/', views.LoginPage, name='login'),
     path('logout/', views.LogoutPage, name='logout'),
     path('courses/', views.CoursesPage, name='courses'),
+    path('watch/<str:course_title>/', views.watch_course, name='watch_course'),
+    path('add_comment/<str:course_title>/', views.add_comment, name='add_comment'),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

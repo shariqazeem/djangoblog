@@ -58,7 +58,7 @@
           <span class="fw-light fs-6">Free Course</span> 
           <h5 class="card-title fw-semibold">{{ rcourse.title }}</h5>
           <p class="card-text text-secondary-emphasis fw-medium">{{ rcourse.description }}</p>
-          <a href="#" class="btn btn-primary">Start Watching</a>
+          <a href="{% url 'watch_course' rcourse.title %}" class="btn btn-primary">Start Watching</a>
         </div>
       </div>
     </div>
