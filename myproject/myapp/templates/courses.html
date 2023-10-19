@@ -4,15 +4,16 @@
 <h2 class="fs-2 text-primary fw-semibold text-center justify-content-center m-4">Premium Courses</h2>
 
   <div class="row">
-    {% for course in courses %}
+    {% for course in all_courses %}
       <div class="col-md-4 mb-4">
         <div class="card shadow m-auto" style="width: 18rem;">
           <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
           <div class="card-body">
             <span class="fw-light fs-6">{% if course.is_free %}Free{% else %}Premium{% endif %} Course</span>
-            <h5 class="card-title fw-semibold">{{ course.name }}</h5>
+            <h5 class="card-title fw-semibold">{{ course.title }}</h5>
             <p class="card-text text-secondary-emphasis fw-medium">{{ course.description }}</p>
-            <a href="#" class="btn btn-primary">Start Watching</a>
+            <a href="{% url 'watch_course' course.title %}" class="btn btn-primary">Start Watching</a>
+
           </div>
         </div>
       </div>

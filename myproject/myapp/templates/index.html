@@ -50,15 +50,15 @@
 <!-- List -->
 <h2 class="fs-2 fw-semibold text-center justify-content-center m-4">Recommended Courses</h2>
 <div class="row justify-content-center m-auto">
-  {% for rcourse in rcourses %}
+  {% for course in recommended_courses %}
     <div class="col-md-4 mb-4">
       <div class="card shadow m-auto" style="width: 18rem;">
-        <img src="{{ rcourse.image.url }}" class="card-img-top" alt="{{ rcourse.title }}">
+        <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
         <div class="card-body">
           <span class="fw-light fs-6">Free Course</span> 
-          <h5 class="card-title fw-semibold">{{ rcourse.title }}</h5>
-          <p class="card-text text-secondary-emphasis fw-medium">{{ rcourse.description }}</p>
-          <a href="{% url 'watch_course' rcourse.title %}" class="btn btn-primary">Start Watching</a>
+          <h5 class="card-title fw-semibold">{{ course.title }}</h5>
+          <p class="card-text text-secondary-emphasis fw-medium">{{ course.description }}</p>
+          <a href="{% url 'watch_course' course.title %}" class="btn btn-primary">Start Watching</a>
         </div>
       </div>
     </div>
