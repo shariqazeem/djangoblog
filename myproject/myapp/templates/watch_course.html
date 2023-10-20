@@ -18,6 +18,11 @@
     .btn.active {
         border-bottom: 2px solid purple;
     }
+    .list-group-item.active {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
 </style>
 
 {% block body %}
@@ -28,17 +33,17 @@
         <hr>
     </div>
     <div class="col-md-3">
-        <h3 class="text-center">Playlist</h3>
-        <ul>
-            {% for video in videos %}
-                <li>
-                    <a href="{% url 'video_detail' video.id %}">
+        <div class="card" style="width: 18rem;"></div>
+        <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: scroll;">
+            {% for video in course.videos.all %}
+                <li class="list-group-item {% if video.id == selected_video_id %}active{% endif %}">
+                    <a class="text-decoration-none text-body-primary fw-semibold" href="{% url 'video_detail' video.id %}">
                         {{ video.title }}
                     </a>
                 </li>
             {% endfor %}
         </ul>
-    </div>    
+    </div>
 </div>
 
 
@@ -116,27 +121,35 @@
         const sections = ["overview-details", "qanda-section", "announcements-section"];
         sections.forEach((section) => {
             const element = document.getElementById(section);
+            const button = document.getElementById(`${section.split('-')[0]}-button`);
+
             if (section === sectionId) {
                 element.style.display = "block";
-            } else {
-                element.style.display = "none";
-            }
-        });
-
-        // Update the button classes
-        sections.forEach((section) => {
-            const button = document.getElementById(`${section.split('-')[0]}-button`);
-            if (section === sectionId) {
                 button.classList.add("active");
             } else {
+                element.style.display = "none";
                 button.classList.remove("active");
             }
         });
+
+        // Update the URL without causing a page reload
+        window.history.pushState({}, "", `?section=${sectionId}`);
+
+        // Save the current section in local storage
+        localStorage.setItem('currentSection', sectionId);
     }
 
-    // Show the "Overview" section and set the button as active on page load
+    // Show the previously selected section and scroll position on page load
     window.onload = function () {
-        toggleSection("overview-details");
+        const currentSection = localStorage.getItem('currentSection') || 'overview-details';
+        toggleSection(currentSection);
+        
+        // Retrieve the section from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const sectionFromURL = urlParams.get('section');
+        if (sectionFromURL) {
+            toggleSection(sectionFromURL);
+        }
     };
 
     // Add event listeners for button clicks
@@ -151,31 +164,6 @@
     document.getElementById("announcements-button").addEventListener("click", function () {
         toggleSection("announcements-section");
     });
-
-
-    document.getElementById("announcements-button").addEventListener("click", function () {
-    toggleSection("announcements-section");
-});
-
-// Assuming you have an AJAX request to submit the comment
-$.ajax({
-    url: '{% url 'add_comment' %}',
-    method: 'POST',
-    data: {
-        comment_text: 'Your comment text here',
-        video_id: '{{ video.id }}'  // Replace with the correct video ID
-    },
-    dataType: 'json',
-    success: function (data) {
-        if (data.success) {
-            // Comment submission was successful
-            // You can update the comments section or display a success message
-            console.log('Comment submitted successfully.');
-        } else {
-            // Handle other scenarios if needed
-        }
-    }
-});
 </script>
 
 

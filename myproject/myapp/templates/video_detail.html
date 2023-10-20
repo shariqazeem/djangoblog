@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block title %}{{ video.title }} - {{ course.title }}{% endblock title %}
 {% load static %}
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
 <style>
     .btn-group {
@@ -18,6 +21,11 @@
     .btn.active {
         border-bottom: 2px solid purple;
     }
+    .list-group-item.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
 </style>
 
 {% block body %}
@@ -28,11 +36,11 @@
         <hr>
     </div>
     <div class="col-md-3">
-        <h3 class="text-center">Playlist</h3>
-        <ul>
+        <div class="card" style="width: 18rem;"></div>
+        <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: scroll;">
             {% for video in course.videos.all %}
-                <li>
-                    <a href="{% url 'video_detail' video.id %}">
+                <li class="list-group-item {% if video.id == selected_video_id %}active{% endif %}">
+                    <a class="text-decoration-none text-body-primary fw-semibold" href="{% url 'video_detail' video.id %}">
                         {{ video.title }}
                     </a>
                 </li>
@@ -40,6 +48,11 @@
         </ul>
     </div>
 </div>
+
+
+
+
+
 
     <div class="btn-group">
         <button id="overview-button" class="btn active">Overview</button>
@@ -88,7 +101,11 @@
 <!-- Announcements Section -->
 <div class="container" id="announcements-section" style="display: none;">
     <h2 class="fs-2 fw-semibold mt-4">Announcements</h2>
-    {{ video.announcements|safe }}
+    {% if course.announcements %}
+    {{ course.announcements|safe }}
+    {% else %}
+    <p>No announcements as of now</p>
+    {% endif %}
 </div>
 
 

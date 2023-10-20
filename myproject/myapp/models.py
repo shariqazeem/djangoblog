@@ -24,9 +24,7 @@ class Video(models.Model):
     q_and_a = models.TextField(blank=True)
     announcements = models.TextField(blank=True)
     course = models.ForeignKey(RCourse, on_delete=models.CASCADE, related_name='videos')
-
-    def __str__(self):
-        return self.title
+    order = models.PositiveIntegerField(default=0)
 
     
 class Caraousel(models.Model):

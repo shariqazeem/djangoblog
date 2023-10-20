@@ -101,28 +101,25 @@ def add_comment(request):
         comment_text = request.POST.get('comment_text')
         video_id = request.POST.get('video_id')
         course_id = request.POST.get('course_id')
-
+        
         if request.user.is_authenticated:
             username = request.user.username
-
+            
             try:
                 if video_id:
                     video = get_object_or_404(Video, pk=video_id)
                     Comment.objects.create(video=video, text=comment_text, username=username)
+                    return redirect('video_detail', video_id=video.id)
                 elif course_id:
                     course = get_object_or_404(RCourse, pk=course_id)
                     Comment.objects.create(course=course, text=comment_text, username=username)
+                    return redirect('watch_course', course_title=course.title)
                 else:
                     return HttpResponse("Invalid request. Missing video_id or course_id.")
             except Exception as e:
                 return HttpResponse(f"Error creating the comment: {str(e)}")
-
-            # Return a success response, such as a JSON response
-            return redirect('video_detail', video_id=video_id)
-
-    # Handle cases where the request method is not POST or there is no user authentication.
+        
     return HttpResponse("Invalid request or user not authenticated.")
-
 
 
 
