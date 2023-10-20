@@ -2,7 +2,9 @@ from django.shortcuts import render, HttpResponse,redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import RCourse, Caraousel, Comment, ImageModel
+from .models import RCourse, Caraousel, Comment, ImageModel, Video
+from django.http import HttpResponse, JsonResponse
+
 
 # Create your views here.
 def index(request):
@@ -61,25 +63,69 @@ def CoursesPage(request):
 
 def watch_course(request, course_title):
     course = get_object_or_404(RCourse, title=course_title)
-    comments = Comment.objects.filter(course=course)  # If you have a Comment model
+    comments = Comment.objects.filter(course=course)
+    videos = course.videos.all()  # Get associated videos for the course
     context = {
         'course': course,
         'comments': comments,
+        'videos': videos,  # Pass the videos queryset to the template
     }
     return render(request, 'watch_course.html', context)
 
 
-def add_comment(request, course_title):
-    course = get_object_or_404(RCourse, title=course_title)
 
+
+def playlist_page(request, course_title):
+    course = get_object_or_404(RCourse, title=course_title)
+    video_urls = course.get_video_urls()  # Fetch all video URLs
+    context = {
+        'course': course,
+        'video_urls': video_urls,
+    }
+    return render(request, 'watch_course.html', context)
+
+def video_detail(request, video_id):
+    video = Video.objects.get(id=video_id)
+    comments = Comment.objects.filter(video=video)
+    context = {
+        'video': video,
+        'course': video.course,
+        'comments': comments,
+    }
+    return render(request, 'video_detail.html', context)
+
+
+
+def add_comment(request):
     if request.method == 'POST':
-        text = request.POST.get('comment_text')
+        comment_text = request.POST.get('comment_text')
+        video_id = request.POST.get('video_id')
+        course_id = request.POST.get('course_id')
 
         if request.user.is_authenticated:
             username = request.user.username
-            Comment.objects.create(course=course, text=text, username=username)
 
-    return redirect('watch_course', course_title=course.title)
+            try:
+                if video_id:
+                    video = get_object_or_404(Video, pk=video_id)
+                    Comment.objects.create(video=video, text=comment_text, username=username)
+                elif course_id:
+                    course = get_object_or_404(RCourse, pk=course_id)
+                    Comment.objects.create(course=course, text=comment_text, username=username)
+                else:
+                    return HttpResponse("Invalid request. Missing video_id or course_id.")
+            except Exception as e:
+                return HttpResponse(f"Error creating the comment: {str(e)}")
+
+            # Return a success response, such as a JSON response
+            return redirect('video_detail', video_id=video_id)
+
+    # Handle cases where the request method is not POST or there is no user authentication.
+    return HttpResponse("Invalid request or user not authenticated.")
+
+
+
+
 
 def ContactPage(request):
     image = ImageModel.objects.first()

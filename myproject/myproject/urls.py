@@ -30,8 +30,14 @@ urlpatterns = [
     path('logout/', views.LogoutPage, name='logout'),
     path('courses/', views.CoursesPage, name='courses'),
     path('watch/<str:course_title>/', views.watch_course, name='watch_course'),
-    path('add_comment/<str:course_title>/', views.add_comment, name='add_comment'),
+    path('add_comment/', views.add_comment, name='add_comment'),
     path('contact/', views.ContactPage, name='contact'),
+    path('playlist/<str:course_title>/', views.playlist_page, name='playlist_page'),
+    path('video/<int:video_id>/', views.video_detail, name='video_detail'),
+    path('video_detail/<int:video_id>/', views.video_detail, name='video_detail'),
+
+
+
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

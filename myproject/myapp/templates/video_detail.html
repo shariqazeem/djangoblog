@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{course.title}} - Shariq Shaukat{% endblock title %}
+{% block title %}{{ video.title }} - {{ course.title }}{% endblock title %}
 {% load static %}
 
 <style>
@@ -21,16 +21,16 @@
 </style>
 
 {% block body %}
-<!-- watch_course.html -->
+<!-- video_detail.html -->
 <div class="row">
     <div class="col-md-9">
-        <iframe width="100%" height="315" src="{{ course.video_link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe width="100%" height="315" src="{{ video.url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         <hr>
     </div>
     <div class="col-md-3">
         <h3 class="text-center">Playlist</h3>
         <ul>
-            {% for video in videos %}
+            {% for video in course.videos.all %}
                 <li>
                     <a href="{% url 'video_detail' video.id %}">
                         {{ video.title }}
@@ -38,9 +38,8 @@
                 </li>
             {% endfor %}
         </ul>
-    </div>    
+    </div>
 </div>
-
 
     <div class="btn-group">
         <button id="overview-button" class="btn active">Overview</button>
@@ -48,33 +47,28 @@
         <button id="announcements-button" class="btn">Announcements</button>
     </div>
 
-
-
 <!-- Overview Section -->
 <div class="container mt-2" id="overview-details" style="display: none;">
-    {{ course.overview|safe }} <!-- Display the overview content -->
+    {{ video.overview|safe }}
 </div>
 
-
-
 <!-- Q&A Section -->
-<div class="container card shadow-lg m-4" id="qanda-section" style="display: none; width: 100%; ">
+<div class="container card shadow-lg m-4" id="qanda-section" style="display: none; width: 100%;">
     <div class="card-body">
         <h6 class="card-subtitle mb-3 text-body-secondary fs-4">Add a new comment</h6>
-    <!-- Add Comment Form -->
-    <form method="post" action="{% url 'add_comment' %}">
-    {% csrf_token %}
-    <textarea class="form-control bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white dark:bg-slate-600 dark:text-gray-200 dark:placeholder-gray-400 mb-2" name="comment_text" rows="4" cols="50" placeholder="Type Your Comment"></textarea>
-    <input type="hidden" name="video_id" value="{{ video.id }}">  <!-- Include video_id for video comments -->
-    <input type="hidden" name="course_id" value="{{ course.id }}">  <!-- Include course_id for course comments -->
-    <button class="btn btn-primary my-2" type="submit">Submit Comment</button>
-</form>
-
-    
-    
-    
-
-
+        <!-- Add Comment Form -->
+        <form method="post" action="{% url 'add_comment' %}">
+            {% csrf_token %}
+            <textarea class="form-control bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white dark:bg-slate-600 dark:text-gray-200 dark:placeholder-gray-400 mb-2" name="comment_text" rows="4" cols="50" placeholder="Type Your Comment"></textarea>
+            <input type="hidden" name="video_id" value="{{ video.id }}">  <!-- Include video_id for video comments -->
+            <input type="hidden" name="course_id" value="{{ course.id }}">  <!-- Include course_id for course comments -->
+            <button class="btn btn-primary my-2" type="submit">Submit Comment</button>
+        </form>
+        
+        
+        
+        
+        
         <h2 class="fs-2 fw-semibold mt-4">Comments ({{ comments|length }})</h2>
         <!-- Display Comments with Pagination -->
         <ul>
@@ -87,27 +81,15 @@
                 </div>
             {% endfor %}
         </ul>
-        
 
     </div>
 </div>
-</div>
-
-
-
-
-
 
 <!-- Announcements Section -->
 <div class="container" id="announcements-section" style="display: none;">
     <h2 class="fs-2 fw-semibold mt-4">Announcements</h2>
-    {% if course.announcements %}
-    {{ course.announcements|safe }}
-    {% else %}
-    <p>No announcements as of now</p>
-    {% endif %}
+    {{ video.announcements|safe }}
 </div>
-
 
 
 <script>
@@ -116,27 +98,35 @@
         const sections = ["overview-details", "qanda-section", "announcements-section"];
         sections.forEach((section) => {
             const element = document.getElementById(section);
+            const button = document.getElementById(`${section.split('-')[0]}-button`);
+
             if (section === sectionId) {
                 element.style.display = "block";
-            } else {
-                element.style.display = "none";
-            }
-        });
-
-        // Update the button classes
-        sections.forEach((section) => {
-            const button = document.getElementById(`${section.split('-')[0]}-button`);
-            if (section === sectionId) {
                 button.classList.add("active");
             } else {
+                element.style.display = "none";
                 button.classList.remove("active");
             }
         });
+
+        // Update the URL without causing a page reload
+        window.history.pushState({}, "", `?section=${sectionId}`);
+
+        // Save the current section in local storage
+        localStorage.setItem('currentSection', sectionId);
     }
 
-    // Show the "Overview" section and set the button as active on page load
+    // Show the previously selected section and scroll position on page load
     window.onload = function () {
-        toggleSection("overview-details");
+        const currentSection = localStorage.getItem('currentSection') || 'overview-details';
+        toggleSection(currentSection);
+        
+        // Retrieve the section from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const sectionFromURL = urlParams.get('section');
+        if (sectionFromURL) {
+            toggleSection(sectionFromURL);
+        }
     };
 
     // Add event listeners for button clicks
@@ -151,31 +141,6 @@
     document.getElementById("announcements-button").addEventListener("click", function () {
         toggleSection("announcements-section");
     });
-
-
-    document.getElementById("announcements-button").addEventListener("click", function () {
-    toggleSection("announcements-section");
-});
-
-// Assuming you have an AJAX request to submit the comment
-$.ajax({
-    url: '{% url 'add_comment' %}',
-    method: 'POST',
-    data: {
-        comment_text: 'Your comment text here',
-        video_id: '{{ video.id }}'  // Replace with the correct video ID
-    },
-    dataType: 'json',
-    success: function (data) {
-        if (data.success) {
-            // Comment submission was successful
-            // You can update the comments section or display a success message
-            console.log('Comment submitted successfully.');
-        } else {
-            // Handle other scenarios if needed
-        }
-    }
-});
 </script>
 
 
