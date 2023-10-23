@@ -5,7 +5,6 @@ from django.contrib import messages
 from .models import RCourse, Caraousel, Comment, ImageModel, Video
 from django.http import HttpResponse, JsonResponse
 
-
 # Create your views here.
 def index(request):
     recommended_courses = RCourse.objects.filter(recommended=True)
@@ -61,6 +60,15 @@ def CoursesPage(request):
     all_courses = RCourse.objects.filter(recommended=False)
     return render(request, 'courses.html', {'all_courses': all_courses})
 
+def playlist_page(request, course_title):
+    course = get_object_or_404(RCourse, title=course_title)
+    video_urls = course.get_video_urls()  # Fetch all video URLs
+    context = {
+        'course': course,
+        'video_urls': video_urls,
+    }
+    return render(request, 'watch_course.html', context)
+
 def watch_course(request, course_title):
     course = get_object_or_404(RCourse, title=course_title)
     comments = Comment.objects.filter(course=course)
@@ -75,22 +83,18 @@ def watch_course(request, course_title):
 
 
 
-def playlist_page(request, course_title):
-    course = get_object_or_404(RCourse, title=course_title)
-    video_urls = course.get_video_urls()  # Fetch all video URLs
-    context = {
-        'course': course,
-        'video_urls': video_urls,
-    }
-    return render(request, 'watch_course.html', context)
-
 def video_detail(request, video_id):
     video = Video.objects.get(id=video_id)
     comments = Comment.objects.filter(video=video)
+
+    # Check if the user is authenticated
+    is_authenticated = request.user.is_authenticated
+
     context = {
         'video': video,
         'course': video.course,
         'comments': comments,
+        'is_authenticated': is_authenticated,  # Include this variable
     }
     return render(request, 'video_detail.html', context)
 

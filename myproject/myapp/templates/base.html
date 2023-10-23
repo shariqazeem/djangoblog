@@ -7,8 +7,13 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Alumni+Sans+Collegiate+One&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:wght@500&display=swap');
+</style>
 
 
     <title>{% block title %}Shariq Shaukat{% endblock title %}</title>
@@ -16,34 +21,35 @@
   <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #ffffff;">
         <div class="container-fluid">
-          <a class="navbar-brand" href="{% url 'index' %}">Shariq Shaukat</a>
+      {% load static %}
+          <img src="{% static "img/logo_web.png" %}" style="height: 56px;" alt="LOGO">
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav m-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'index' %}" style="font-family: 'Montserrat', sans-serif;">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'courses' %}">Courses</a>
+                <a class="nav-link" href="{% url 'courses' %}" style="font-family: 'Montserrat', sans-serif;">Courses</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Blog</a>
+                <a class="nav-link" href="#" style="font-family: 'Montserrat', sans-serif;">Blog</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                <a class="nav-link" href="{% url 'contact' %}" style="font-family: 'Montserrat', sans-serif;">Contact</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Work With Us</a>
+                <a class="nav-link" href="#" style="font-family: 'Montserrat', sans-serif;">Work With Us</a>
               </li>
             </ul>
             {% if user.is_authenticated %}
-            <span class="navbar-text mx-2">Welcome, {{ user.username }}</span>
-            <a href="{% url 'logout' %}" type="button" class="btn btn-primary mx-2">Logout</a>
+            <span class="navbar-text mx-2" style="font-family: 'Montserrat', sans-serif;">Welcome, {{ user.username }}</span>
+            <a href="{% url 'logout' %}" type="button" class="btn btn-primary mx-2" style="font-family: 'Montserrat', sans-serif;">Logout</a>
           {% else %}
-            <a href="{% url 'login' %}" type="button" class="btn btn-primary mx-2">Login</a>
-            <a href="{% url 'signup' %}" type="button" class="btn btn-primary mx-2">Signup</a>
+            <a href="{% url 'login' %}" type="button" class="btn btn-primary mx-2" style="font-family: 'Montserrat', sans-serif;">Login</a>
+            <a href="{% url 'signup' %}" type="button" class="btn btn-primary mx-2" style="font-family: 'Montserrat', sans-serif;">Signup</a>
   {% endif %}
           </div>
         </div>
@@ -58,11 +64,11 @@
         <div class="container py-4">
           <div class="row">
             <div class="col">
-              <h4 class="fw-semibold">Shariq Shaukat</h4>
-              <p>Copyright &copy; 2023 portfolio.shariqdevops.online</p>
+              <h4 class="fw-semibold" style="font-family: 'Montserrat', sans-serif;">Shariq Shaukat</h4>
+              <p style="font-family: 'Montserrat', sans-serif;">Copyright &copy; 2023 portfolio.shariqdevops.online</p>
             </div>
             <div class="col">
-              <h4 class="fw-semibold">Follow Me</h4>
+              <h4 class="fw-semibold" style="font-family: 'Montserrat', sans-serif;">Follow Me</h4>
               <ul class="list-unstyled list-inline social-icons">
                 <li class="list-inline-item">
                   <a href="https://www.instagram.com/itx_shariq" target="_blank" title="Instagram">
@@ -84,19 +90,8 @@
           </div>
         </div>
       </footer>
-      
-      
-      
-
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.2/dist/js/bootstrap.bundle.min.js"></script>
-    
   </body>
 </html>

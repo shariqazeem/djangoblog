@@ -34,7 +34,7 @@
           <span id="animatedCursor" aria-hidden="true" >|</span></span>
         </h4>
         <p class="mt-2 small text-secondary">Confused on which course to take? I have got you covered. Browse courses and find out the best course for you. It's free! This channel is my attempt to teach basics and those coding and DevOps techniques to people in a short time which took me ages to learn.</p>
-        <button type="button" class="btn btn-dark mb-2">Free Courses</button>
+        <a href="{% url "courses" %}" type="button" class="btn btn-dark mb-2">Free Courses</a>
         <button type="button" class="btn btn-secondary mb-2">Explore Blog</button>
       </div>
       <!-- This div is hidden in smaller screens -->
@@ -48,7 +48,8 @@
     </div>
 
 <!-- List -->
-<h2 class="fs-2 fw-semibold text-center justify-content-center m-4">Recommended Courses</h2>
+<h2 class="fs-2 fw-semibold text-center justify-content-center m-4" style="font-family: 'Lato', sans-serif;
+">Recommended Tutorials</h2>
 <div class="row justify-content-center m-auto">
   {% for course in recommended_courses %}
     <div class="col-md-4 mb-4">
@@ -56,8 +57,8 @@
         <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
         <div class="card-body">
           <span class="fw-light fs-6">Free Course</span> 
-          <h5 class="card-title fw-semibold">{{ course.title }}</h5>
-          <p class="card-text text-secondary-emphasis fw-medium">{{ course.description }}</p>
+          <h5 class="card-title fw-semibold" style="font-family: 'Montserrat', sans-serif;">{{ course.title }}</h5>
+          <p class="card-text text-secondary-emphasis fw-medium" style="font-family: 'Lato', sans-serif;">{{ course.description }}</p>
           <a href="{% url 'watch_course' course.title %}" class="btn btn-primary">Start Watching</a>
         </div>
       </div>
@@ -67,7 +68,8 @@
 
 
 <!-- testimonial -->
-<h2 class="fs-2 fw-semibold text-center justify-content-center m-4">Testimonials</h2>
+<h2 class="fs-2 fw-semibold text-center justify-content-center m-4" style="font-family: 'Lato', sans-serif;
+">Testimonials</h2>
 <div class="row">
   <div class="col-md-6">
     <div class="card mb-4 bg-body-secondary text-emphasis-light" >
