@@ -10,9 +10,9 @@
           <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
           <div class="card-body">
             <span class="fw-light fs-6">{% if course.is_free %}Free{% else %}Premium{% endif %} Course</span>
-            <h5 class="card-title fw-semibold">{{ course.title }}</h5>
-            <p class="card-text text-secondary-emphasis fw-medium">{{ course.description }}</p>
-            <a href="{% url 'watch_course' course.title %}" class="btn btn-primary">Start Watching</a>
+            <h5 class="card-title fw-semibold" style="font-family: 'Montserrat', sans-serif;">{{ course.title }}</h5>
+            <p class="card-text text-secondary-emphasis fw-medium" style="font-family: 'Lato', sans-serif;">{{ course.description }}</p>
+            <a href="{% url 'watch_course' course.title %}" class="btn btn-primary" style="font-family: 'Montserrat', sans-serif;">Start Watching</a>
 
           </div>
         </div>

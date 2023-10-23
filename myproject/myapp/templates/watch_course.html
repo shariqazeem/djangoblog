@@ -18,20 +18,45 @@
     .btn.active {
         border-bottom: 2px solid purple;
     }
+    .list-group-item.active {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
 </style>
 
 {% block body %}
 <!-- watch_course.html -->
-<iframe width="100%" height="315" src="{{ course.video_link }}title=" YouTube video player" frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen></iframe>
-    <hr>
+
+
+
+<div class="row">
+    <div class="col-md-9">
+        <iframe width="100%" height="315" src="{{ course.video_link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <hr>
+    </div>
+    <div class="col-md-3">
+        <div class="card" style="width: 18rem;"></div>
+        <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: scroll;">
+            {% for video in course.videos.all %}
+                <li class="list-group-item {% if video.id == selected_video_id %}active{% endif %}">
+                    <a class="text-decoration-none text-body-primary fw-semibold" href="{% url 'video_detail' video.id %}">
+                        {{ video.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
 
     <div class="btn-group">
         <button id="overview-button" class="btn active">Overview</button>
         <button id="qanda-button" class="btn">Q&A</button>
         <button id="announcements-button" class="btn">Announcements</button>
     </div>
+
+
 
 <!-- Overview Section -->
 <div class="container mt-2" id="overview-details" style="display: none;">
@@ -45,14 +70,17 @@
     <div class="card-body">
         <h6 class="card-subtitle mb-3 text-body-secondary fs-4">Add a new comment</h6>
     <!-- Add Comment Form -->
-<form method="post" action="{% url 'add_comment' course.title %}">
+    <form method="post" action="{% url 'add_comment' %}">
     {% csrf_token %}
-    <div class="mb-3">
-        <!-- Your comment form fields here -->
-        <textarea type="text" class="form-control bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white dark:bg-slate-600 dark:text-gray-200 dark:placeholder-gray-400 mb-2" placeholder="Type Your Comment" name="comment_text"></textarea>
-        <button class="btn btn-primary my-2" type="submit">Submit Comment</button>
-    </div>
+    <textarea class="form-control bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white dark:bg-slate-600 dark:text-gray-200 dark:placeholder-gray-400 mb-2" name="comment_text" rows="4" cols="50" placeholder="Type Your Comment"></textarea>
+    <input type="hidden" name="video_id" value="{{ video.id }}">  <!-- Include video_id for video comments -->
+    <input type="hidden" name="course_id" value="{{ course.id }}">  <!-- Include course_id for course comments -->
+    <button class="btn btn-primary my-2" id="submit-comment-button" type="submit">Submit Comment</button>
 </form>
+
+    
+    
+    
 
 
         <h2 class="fs-2 fw-semibold mt-4">Comments ({{ comments|length }})</h2>
@@ -96,27 +124,35 @@
         const sections = ["overview-details", "qanda-section", "announcements-section"];
         sections.forEach((section) => {
             const element = document.getElementById(section);
+            const button = document.getElementById(`${section.split('-')[0]}-button`);
+
             if (section === sectionId) {
                 element.style.display = "block";
-            } else {
-                element.style.display = "none";
-            }
-        });
-
-        // Update the button classes
-        sections.forEach((section) => {
-            const button = document.getElementById(`${section.split('-')[0]}-button`);
-            if (section === sectionId) {
                 button.classList.add("active");
             } else {
+                element.style.display = "none";
                 button.classList.remove("active");
             }
         });
+
+        // Update the URL without causing a page reload
+        window.history.pushState({}, "", `?section=${sectionId}`);
+
+        // Save the current section in local storage
+        localStorage.setItem('currentSection', sectionId);
     }
 
-    // Show the "Overview" section and set the button as active on page load
+    // Show the previously selected section and scroll position on page load
     window.onload = function () {
-        toggleSection("overview-details");
+        const currentSection = localStorage.getItem('currentSection') || 'overview-details';
+        toggleSection(currentSection);
+        
+        // Retrieve the section from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const sectionFromURL = urlParams.get('section');
+        if (sectionFromURL) {
+            toggleSection(sectionFromURL);
+        }
     };
 
     // Add event listeners for button clicks
@@ -131,6 +167,7 @@
     document.getElementById("announcements-button").addEventListener("click", function () {
         toggleSection("announcements-section");
     });
+    
 </script>
 
 
