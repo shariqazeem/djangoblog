@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import RCourse, Caraousel, Comment, ImageModel, Video
 from django.http import HttpResponse, JsonResponse
+from .forms import ApplicantForm
 
 # Create your views here.
 def index(request):
@@ -132,6 +133,20 @@ def ContactPage(request):
     image = ImageModel.objects.first()
     return render(request, 'contact.html',{'image':image})
 
+def WorkWithUsPage(request):
+    return render(request, 'workwithus.html')
+
+def apply_now(request):
+    if request.method == 'POST':
+        form = ApplicantForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the data to the database
+            # Redirect to a success page or do something else
+            return render(request, 'workwithus.html')
+
+    else:
+        form = ApplicantForm()
+    return render(request, 'workwithus.html', {'form': form})
 
 
 

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Apply Now - Shariq Shaukat{% endblock title %}
+{% load static %}
+
+
+</style>
+
+{% block body %}
+
+<div class="container row m-auto mt-5">
+    <div class="col-md-6 m-auto text-center text-lg-start">
+      <h1 class="">We are hiring!</h1>
+      <p>We are looking for freelance Developers, Subtitle writers, Content writers and Video editors. If you think you are fit for the role. Submit the form. Make sure you have a valid email so we can contact you back in case your application gets selected. Cheers!</p>
+    </div>
+    <!-- This div is hidden in smaller screens -->
+    
+    <div class="col-md-6 m-auto bg-light">
+        <form class="m-3" method="post" action="{% url 'apply_now' %}">
+            {% csrf_token %}
+            <h4 class="fs-5">Apply Now!</h4>
+            <div class="mb-3">
+              <label for="fname" class="form-label">Full name</label>
+              <input type="text" class="form-control" id="fname" name="full_name">
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="text" class="form-control" id="email" name="email">
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" id="phone" name="phone_number">
+            </div>
+            <div class="mb-3">
+              <label for="resume" class="form-label">Link to your resume</label>
+              <input type="text" class="form-control" id="resume" name="resume_link">
+            </div>
+            <div class="mb-3">
+              <label for="skills" class="form-label">Choose your skills:</label>
+              <select id="skills" name="skills" class="form-control" required>
+                <option value="" selected disabled>Select a skill</option>
+                <option value="Subtitle Writer">Subtitle Writer</option>
+                <option value="Content Writer">Content Writer</option>
+                <option value="Video Editor">Video Editor</option>
+                <option value="MERN Dev">MERN Dev</option>
+                <option value="Python Dev">Python Dev</option>
+                <option value="PHP Dev">PHP Dev</option>
+                <option value="JavaScript Dev">JavaScript Dev</option>
+                <option value="Java Dev">Java Dev</option>
+              </select>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+    </div>
+    
+  </div>
+
+{% endblock body %}

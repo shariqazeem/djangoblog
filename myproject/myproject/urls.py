@@ -21,7 +21,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 from myapp import views
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.index,name='index'),
@@ -35,6 +34,9 @@ urlpatterns = [
     path('playlist/<str:course_title>/', views.playlist_page, name='playlist_page'),
     path('video/<int:video_id>/', views.video_detail, name='video_detail'),
     path('video_detail/<int:video_id>/', views.video_detail, name='video_detail'),
+    path('workwithus/', views.WorkWithUsPage, name='workwithus'),
+    path('apply/', views.apply_now, name='apply_now'),
+
 
 
 

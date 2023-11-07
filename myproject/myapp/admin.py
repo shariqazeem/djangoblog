@@ -6,12 +6,13 @@ from .models import RCourse
 from .models import Caraousel
 from .models import Comment
 from .models import ImageModel
+from .models import Applicant
 
 class VideoAdmin(admin.ModelAdmin):
     list_display = ('title', 'course', 'order',)  # Specify the fields you want to display
     list_editable = ('order',)
 
-
+admin.site.register(Applicant)
 admin.site.register(Video, VideoAdmin)
 admin.site.register(RCourse)
 admin.site.register(Caraousel)

@@ -46,4 +46,12 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     username = models.CharField(max_length=100, default="Anonymous")
 
+class Applicant(models.Model):
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=20)
+    resume_link = models.URLField()
+    skills = models.CharField(max_length=50)
+
+
 
