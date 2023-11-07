@@ -9,15 +9,15 @@
 
 <div class="container row m-auto mt-5">
     <div class="col-md-6 m-auto text-center text-lg-start">
-      <h1 class="">We are hiring!</h1>
-      <p>We are looking for freelance Developers, Subtitle writers, Content writers and Video editors. If you think you are fit for the role. Submit the form. Make sure you have a valid email so we can contact you back in case your application gets selected. Cheers!</p>
+      <h1 class="fs-2 fw-semibold" style="font-family: 'Lato', sans-serif;">We are hiring!</h1>
+      <p style="font-family: 'Montserrat', sans-serif;">We are looking for freelance Developers, Subtitle writers, Content writers and Video editors. If you think you are fit for the role. Submit the form. Make sure you have a valid email so we can contact you back in case your application gets selected. Cheers!</p>
     </div>
     <!-- This div is hidden in smaller screens -->
     
     <div class="col-md-6 m-auto bg-light">
         <form class="m-3" method="post" action="{% url 'apply_now' %}">
             {% csrf_token %}
-            <h4 class="fs-5">Apply Now!</h4>
+            <h4 class="fs-5 fw-semibold" style="font-family: 'Lato', sans-serif;">Apply Now!</h4>
             <div class="mb-3">
               <label for="fname" class="form-label">Full name</label>
               <input type="text" class="form-control" id="fname" name="full_name">
