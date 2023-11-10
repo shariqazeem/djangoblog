@@ -5,6 +5,8 @@ from django.contrib import messages
 from .models import RCourse, Caraousel, Comment, ImageModel, Video
 from django.http import HttpResponse, JsonResponse
 from .forms import ApplicantForm
+from django.views.decorators.csrf import csrf_exempt
+
 
 # Create your views here.
 def index(request):
@@ -13,7 +15,7 @@ def index(request):
     return render(request, 'index.html', {'recommended_courses': recommended_courses, 'caraousel': caraousel})
 
 
-
+@csrf_exempt
 def LoginPage(request):
     if request.method == 'POST':
         username = request.POST.get('username') 
@@ -29,7 +31,7 @@ def LoginPage(request):
     return render(request, 'login.html')
 
 
-
+@csrf_exempt
 def SignupPage(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -51,7 +53,8 @@ def SignupPage(request):
     
     # Render the signup page for GET requests as well
     return render(request, 'signup.html')
-            
+
+@csrf_exempt    
 def LogoutPage(request):
     logout(request)
     messages.success(request, "You have been successfully logged out.")
@@ -100,7 +103,7 @@ def video_detail(request, video_id):
     return render(request, 'video_detail.html', context)
 
 
-
+@csrf_exempt
 def add_comment(request):
     if request.method == 'POST':
         comment_text = request.POST.get('comment_text')
@@ -136,6 +139,7 @@ def ContactPage(request):
 def WorkWithUsPage(request):
     return render(request, 'workwithus.html')
 
+@csrf_exempt
 def apply_now(request):
     if request.method == 'POST':
         form = ApplicantForm(request.POST)
