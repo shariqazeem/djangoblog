@@ -18,6 +18,9 @@ RUN pip install -r requirements.txt
 # Install Gunicorn
 RUN pip install gunicorn
 
+# Create a volume for the SQLite database
+VOLUME /app/myproject
+
 # Expose the port your Django application is running on (e.g., 8000)
 EXPOSE 8000
 
