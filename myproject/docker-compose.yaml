@@ -13,7 +13,7 @@ services:
       - DJANGO_DEBUG=False
     volumes:
       - ./myproject:/app/myproject  # Map local code to container
-      - django_db_data:/app/myproject  # Persistent volume for SQLite database
+      - django_db_data:/app/myproject/data
     ports:
       - "8000:8000"
     command: ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi:application"]

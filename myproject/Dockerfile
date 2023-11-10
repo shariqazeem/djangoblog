@@ -9,17 +9,14 @@ ENV DJANGO_DEBUG=False
 # Set your working directory
 WORKDIR /app
 
-# Copy your application code into the container
-COPY . /app
+# Copy only necessary files into the container
+COPY ./myproject /app/myproject
 
 # Install Python dependencies
-RUN pip install -r requirements.txt
+RUN pip install -r /app/myproject/requirements.txt
 
 # Install Gunicorn
 RUN pip install gunicorn
-
-# Create a volume for the SQLite database
-VOLUME /app/myproject
 
 # Expose the port your Django application is running on (e.g., 8000)
 EXPOSE 8000
