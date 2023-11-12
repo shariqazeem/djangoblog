@@ -12,7 +12,7 @@ services:
       - DJANGO_SECRET_KEY='django-insecure-v0=%5snki&wa=c*khm0mvr74tzb%zt+u0cq8e4h1-@(tncz5#@'
       - DJANGO_DEBUG=False
     volumes:
-      - django_db_data:db.sqlite3
+      - /myproject/db.sqlite3:/app/db.sqlite3
     ports:
       - "8000:8000"
     command: ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi:application"]
