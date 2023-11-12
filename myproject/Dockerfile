@@ -9,11 +9,11 @@ ENV DJANGO_DEBUG=False
 # Set your working directory
 WORKDIR /app
 
-# Copy only necessary files into the container
-COPY ./myproject /app/myproject
+# Copy your application code into the container
+COPY . /app
 
 # Install Python dependencies
-RUN pip install -r /app/myproject/requirements.txt
+RUN pip install -r requirements.txt
 
 # Install Gunicorn
 RUN pip install gunicorn
