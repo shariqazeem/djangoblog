@@ -7,7 +7,7 @@ from django.http import HttpResponse, JsonResponse
 from .forms import ApplicantForm
 from django.views.decorators.csrf import csrf_exempt
 
-
+@csrf_exempt
 # Create your views here.
 def index(request):
     recommended_courses = RCourse.objects.filter(recommended=True)
