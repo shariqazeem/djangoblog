@@ -14,7 +14,7 @@ services:
     volumes:
       - ../../djangoblog/myproject/db.sqlite3:/app/db.sqlite3
     ports:
-      - "8000:8000"
+      - "80:8000"
     command: ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi:application"]
 
 volumes:
