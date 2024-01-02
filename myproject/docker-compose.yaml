@@ -14,7 +14,5 @@ services:
     ports:
       - "80:8000"
     volumes:
-      - django_db_data:/app/db.sqlite3
+      - ./db.sqlite3:/app/db.sqlite3
 
-volumes:
-  django_db_data:
