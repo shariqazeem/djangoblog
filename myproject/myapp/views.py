@@ -146,7 +146,7 @@ def apply_now(request):
     if request.method == 'POST':
         form = ApplicantForm(request.POST)
         if form.is_valid():
-            form.save()  # Save the data to the database
+            applicant = form.save()  # Save the data to the database
 
             # Send an email to the applicant
             applicant_subject = 'Confirmation: Your Job Application has been submitted'
