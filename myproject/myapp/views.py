@@ -6,6 +6,8 @@ from .models import RCourse, Caraousel, Comment, ImageModel, Video
 from django.http import HttpResponse, JsonResponse
 from .forms import ApplicantForm
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
+
 
 @csrf_exempt
 # Create your views here.
@@ -145,6 +147,20 @@ def apply_now(request):
         form = ApplicantForm(request.POST)
         if form.is_valid():
             form.save()  # Save the data to the database
+
+            # Send an email to the applicant
+            applicant_subject = 'Confirmation: Your Job Application has been submitted'
+            applicant_message = f'Thank you for submitting your job application, {applicant.full_name}! Your application has been received. We will review it and contact you if necessary.'
+
+            send_mail(applicant_subject, applicant_message, 'shariqshaukat786@example.com', [applicant.email])
+
+            # Send an email with the form data to yourself
+            admin_subject = 'New Job Application'
+            admin_message = f'Name: {applicant.full_name}\nEmail: {applicant.email}\nPhone: {applicant.phone_number}\nSkills: {applicant.skills}\nResume Link: {applicant.resume_link}'
+
+            # Use your own email address for both 'from' and 'to'
+            send_mail(admin_subject, admin_message, 'shariqshaukat786@example.com', ['shariqshaukat786@gmail.com'])
+
             # Redirect to a success page or do something else
             return render(request, 'workwithus.html')
 
