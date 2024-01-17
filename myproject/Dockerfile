@@ -18,6 +18,10 @@ RUN pip install -r requirements.txt
 # Install Gunicorn
 RUN pip install gunicorn
 
+RUN python manage.py makemigrations
+
+RUN python manage.py migrate
+
 # Expose the port your Django application is running on (e.g., 8000)
 EXPOSE 8000
 
