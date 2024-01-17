@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}{{ blog.title }} - Shariq Shaukat{% endblock title %}
+{% block body %}
+{% load static %}
+<body style="background-color: rgb(247 247 247);">
+<div class="container mt-5 card shadow-sm m-auto">
+            <!-- Card content goes here -->
+            <h2 class="text-center mt-2" style="font-weight: bold; font-family: 'Lato', sans-serif;">{{ blog.title }}</h2>
+            <div class="text-center">
+                <a href="{% url 'index' %}" style="font-weight: normal; text-decoration: none; color: black;" class="text-uppercase">{{ blog.author }}</a> ·
+                <span style="font-weight: lighter; color: rgb(80, 79, 79);">{{ blog.created_at }}</span>
+            </div>            
+            <p class="card-text text-secondary-emphasis fw-medium" style="font-family: 'Lato', sans-serif;">{{ blog.content|safe }}</p>
+</div>
+</body>
+{% endblock body %}

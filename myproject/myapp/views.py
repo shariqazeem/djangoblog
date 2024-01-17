@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse,redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import RCourse, Caraousel, Comment, ImageModel, Video
+from .models import RCourse, Caraousel, Comment, ImageModel, Video, Blog
 from django.http import HttpResponse, JsonResponse
 from .forms import ApplicantForm
 from django.views.decorators.csrf import csrf_exempt
@@ -170,7 +170,11 @@ def apply_now(request):
 
 
 def BlogPage(request):
-    return render(request, 'blog.html')
+    blogs = Blog.objects.all()
+    return render(request, 'blog.html', {'blogs': blogs},)
 
+def BlogDetail(request, blog_title):
+    blog = get_object_or_404(Blog, title=blog_title)
+    return render(request, 'blog_detail.html', {'blog': blog})
 
 

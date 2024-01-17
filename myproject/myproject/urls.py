@@ -39,6 +39,8 @@ urlpatterns = [
     path('workwithus/', views.WorkWithUsPage, name='workwithus'),
     path('apply/', views.apply_now, name='apply_now'),
     path('blog/', views.BlogPage, name='blog'),
+    path('blog/<str:blog_title>/', views.BlogDetail, name='blog_detail'),
+
 
 
     path('sitemap.xml', TemplateView.as_view(template_name="sitemap.xml", content_type="text/xml")),

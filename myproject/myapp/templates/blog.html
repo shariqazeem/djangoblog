@@ -1,24 +1,30 @@
 {% extends 'base.html' %}
-{% block title %}Learn to Automate Systems - Shariq Shaukat{% endblock title %}
+{% block title %}Blogs - Shariq Shaukat{% endblock title %}
 {% block body %}
 {% load static %}
+<body style="background-color: rgb(247 247 247);">
 
 <div class="container">
 <h2 class="fs-2 text-primary fw-semibold m-4">Coding Blog</h2>
 <div class="row">
+    {% for blog in blogs %}
     <div class="mb-4">
         <div class="card shadow p-4" style="width: 35rem;">
             <!-- Card content goes here -->
-            <h3>Python - Ultimate Story</h3>
-            <p class="card-text text-secondary-emphasis fw-medium" style="font-family: 'Lato', sans-serif;">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Similique beatae temporibus consequatur aspernatur, tenetur ut natus vitae aut repellat provident accusantium corrupti porro illo mollitia repellendus culpa harum velit. Vitae nostrum quas cum amet.</p>
+            <h3>{{  blog.title   }}</h3>
+            <div>
+                <a href="{% url 'index' %}" style="font-weight: normal; text-decoration: none; color: black;" class="text-uppercase">{{ blog.author }}</a> ·
+                <span style="font-weight: lighter; color: rgb(80, 79, 79);">{{ blog.created_at }}</span>
+            </div>              <p class="card-text text-secondary-emphasis fw-medium" style="font-family: 'Lato', sans-serif;">{{ blog.description }}</p>
 
-            <a href="#" type="button" class="btn btn-primary" style="font-family: 'Montserrat', sans-serif; width: 8rem;">Read More</a>
+            <!-- Update the anchor tag in the loop to link to the detail view -->
+            <a href="{% url 'blog_detail' blog.title %}" class="btn btn-primary" style="font-family: 'Montserrat', sans-serif; width: 8rem;">Read More</a>
         </div>
         
     </div>
 </div>
-</div>
+{% endfor %}
 </div>
 
-
+</body>
 {% endblock body %}

@@ -53,5 +53,13 @@ class Applicant(models.Model):
     resume_link = models.URLField()
     skills = models.CharField(max_length=50)
 
+class Blog(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='blog_images')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blogs')
+    description = models.TextField(blank=True)
+    content = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
 
 
