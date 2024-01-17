@@ -169,4 +169,8 @@ def apply_now(request):
     return render(request, 'workwithus.html', {'form': form})
 
 
+def BlogPage(request):
+    return render(request, 'blog.html')
+
+
 
