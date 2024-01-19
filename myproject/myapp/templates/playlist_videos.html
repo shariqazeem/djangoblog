@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Playlist Videos{% endblock title %}
+{% block body %}
+<h2 class="fs-2 text-primary fw-semibold text-center justify-content-center m-4">Playlist Videos</h2>
+
+<div class="row">
+      {% for video in videos %}
+      <div class="col-md-4 mb-4">
+        <div class="card shadow m-auto" style="width: 18rem;">
+          <img src="{{ video.thumbnail_url }}" class="card-img-top" alt="{{ video.title }}">
+          <div class="card-body">
+            <h5 class="card-title fw-semibold" style="font-family: 'Montserrat', sans-serif;">{{ video.title }}</h5>
+            {% comment %} <p class="card-text text-secondary-emphasis fw-medium" style="font-family: 'Lato', sans-serif;">{{ video.description }}</p> {% endcomment %}
+            <a href="{% url "video_player" video.video_id %}" class="btn btn-primary" style="font-family: 'Montserrat', sans-serif;">Watch Video</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+  </div>
+{% endblock body %}

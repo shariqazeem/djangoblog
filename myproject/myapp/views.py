@@ -7,6 +7,12 @@ from django.http import HttpResponse, JsonResponse
 from .forms import ApplicantForm
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
+import os
+import google_auth_oauthlib.flow
+import googleapiclient.discovery
+import googleapiclient.errors
+from googleapiclient.discovery import build
+import urllib.parse
 
 
 @csrf_exempt
@@ -63,17 +69,112 @@ def LogoutPage(request):
     return redirect('login')
 
 def CoursesPage(request):
-    all_courses = RCourse.objects.filter(recommended=False)
-    return render(request, 'courses.html', {'all_courses': all_courses})
+    api_key = 'AIzaSyDFa8iKnZW6dKcVeGyANPqaV0dlL-JvMSQ'  # Replace with your actual YouTube Data API v3 key
 
-def playlist_page(request, course_title):
-    course = get_object_or_404(RCourse, title=course_title)
-    video_urls = course.get_video_urls()  # Fetch all video URLs
+    playlist_items = get_playlist(api_key)
     context = {
-        'course': course,
-        'video_urls': video_urls,
+        'playlist_items': playlist_items,
     }
-    return render(request, 'watch_course.html', context)
+    return render(request, 'courses.html', context)
+
+def get_playlist(request):
+    api_service_name = "youtube"
+    api_version = "v3"
+    api_key = 'AIzaSyDFa8iKnZW6dKcVeGyANPqaV0dlL-JvMSQ'
+
+
+    youtube = googleapiclient.discovery.build(
+        api_service_name, api_version, developerKey=api_key)
+
+    request = youtube.playlists().list(
+        part="snippet,contentDetails",
+        channelId="UCbq92tl0RDRTEBocctsWEsg",
+        maxResults=25
+    )
+    response = request.execute()
+    playlist_items = []
+
+    for playlist in response.get('items', []):
+        snippet = playlist['snippet']
+        title = snippet['title']
+        description = snippet['description']
+        thumbnail_url = snippet['thumbnails']['maxres']['url']
+        playlist_id = playlist['id']
+        
+        playlist_item = {
+            'title': title,
+            'description': description,
+            'thumbnail_url': thumbnail_url,
+            'playlist_id': playlist_id,
+        }
+
+        playlist_items.append(playlist_item)
+    return playlist_items
+
+
+def playlist_videos(request, playlist_id):
+    api_key = 'AIzaSyDFa8iKnZW6dKcVeGyANPqaV0dlL-JvMSQ'  # Replace with your actual YouTube Data API v3 key
+
+    youtube = build("youtube", "v3", developerKey=api_key)
+
+    # Retrieve videos from the playlist
+    playlist_items = youtube.playlistItems().list(
+        part="snippet",
+        playlistId=playlist_id,
+        maxResults=25
+    ).execute()
+
+    videos = []
+
+    for item in playlist_items.get('items', []):
+        snippet = item['snippet']
+        title = snippet['title']
+        description = snippet['description']
+        thumbnail_url = snippet['thumbnails']['high']['url']
+        video_id = snippet['resourceId']['videoId']
+
+        video = {
+            'title': title,
+            'description': description,
+            'thumbnail_url': thumbnail_url,
+            'video_id': video_id,
+        }
+
+        videos.append(video)
+
+    context = {
+        'videos': videos,
+    }
+
+    return render(request, 'playlist_videos.html', context)
+
+def video_player(request, video_id):
+    api_key = 'AIzaSyDFa8iKnZW6dKcVeGyANPqaV0dlL-JvMSQ'  # Replace with your actual YouTube Data API v3 key
+
+    youtube = build("youtube", "v3", developerKey=api_key)
+
+    # Retrieve video details
+    video_details = youtube.videos().list(
+        part="snippet,contentDetails",
+        id=video_id
+    ).execute()
+
+    video = video_details['items'][0]
+    title = video['snippet']['title']
+    description = video['snippet']['description']
+    thumbnail_url = video['snippet']['thumbnails']['default']['url']
+    duration = video['contentDetails']['duration']
+
+    context = {
+        'video': video,
+        'title': title,
+        'description': description,
+        'thumbnail_url': thumbnail_url,
+        'video_id': video_id,
+        'duration': duration,
+    }
+
+    return render(request, 'video_player.html', context)
 
 def watch_course(request, course_title):
     course = get_object_or_404(RCourse, title=course_title)

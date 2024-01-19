@@ -3,21 +3,21 @@
 {% block body%}
 <h2 class="fs-2 text-primary fw-semibold text-center justify-content-center m-4">Premium Courses</h2>
 
+{% for playlist_item in playlist_items %}
   <div class="row">
-    {% for course in all_courses %}
       <div class="col-md-4 mb-4">
         <div class="card shadow m-auto" style="width: 18rem;">
-          <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+          <img src="{{ playlist_item.thumbnail_url }}" class="card-img-top" alt="{{ course.title }}">
           <div class="card-body">
-            <span class="fw-light fs-6">{% if course.is_free %}Free{% else %}Premium{% endif %} Course</span>
-            <h5 class="card-title fw-semibold" style="font-family: 'Montserrat', sans-serif;">{{ course.title }}</h5>
-            <p class="card-text text-secondary-emphasis fw-medium" style="font-family: 'Lato', sans-serif;">{{ course.description }}</p>
-            <a href="{% url 'watch_course' course.title %}" class="btn btn-primary" style="font-family: 'Montserrat', sans-serif;">Start Watching</a>
+            <span class="fw-light fs-6">Free Premium Course</span>
+            <h5 class="card-title fw-semibold" style="font-family: 'Montserrat', sans-serif;">{{ playlist_item.title }}</h5>
+            {% comment %} <p class="card-text text-secondary-emphasis fw-medium" style="font-family: 'Lato', sans-serif;">{{ playlist_item.description }}</p> {% endcomment %}
+            <a href="{% url 'playlist_videos' playlist_item.playlist_id %}" class="btn btn-primary" style="font-family: 'Montserrat', sans-serif;">Start Watching</a>
+
 
           </div>
         </div>
       </div>
-    {% endfor %}
   </div>
-
+  {% endfor %}
 {% endblock body%}
