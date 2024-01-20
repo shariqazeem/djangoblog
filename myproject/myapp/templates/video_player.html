@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{course.title}} - Shariq Shaukat{% endblock title %}
+{% block title %}{{title}} - Shariq Shaukat{% endblock title %}
 {% load static %}
 
 <style>
@@ -48,43 +48,36 @@
 
 
 <!-- Overview Section -->
-<div class="container mt-2" id="overview-details" style="display: none;">
-{{ course.overview|safe }} <!-- Display the overview content -->
+<div class="container mt-3 " id="overview-details" style="display: none; ">
+    <span style="font-weight: bold;">{{ title|safe }} <!-- Display the overview content --></span>
+    <span class="container" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">{{ description}}</span>
 </div>
+
 
 
 
 <!-- Q&A Section -->
 <div class="container card shadow-lg m-4" id="qanda-section" style="display: none; width: 100%; ">
 <div class="card-body">
-    {% comment %} <h6 class="card-subtitle mb-3 text-body-secondary fs-4">Construction Going On</h6> {% endcomment %}
-<!-- Add Comment Form -->
-{% comment %} <form method="post" action="{% url 'add_comment' %}">
-{% csrf_token %}
-<textarea class="form-control bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white dark:bg-slate-600 dark:text-gray-200 dark:placeholder-gray-400 mb-2" name="comment_text" rows="4" cols="50" placeholder="Type Your Comment"></textarea>
-<input type="hidden" name="video_id" value="{{ video.id }}">  <!-- Include video_id for video comments -->
-<input type="hidden" name="course_id" value="{{ course.id }}">  <!-- Include course_id for course comments -->
-<button class="btn btn-primary my-2" id="submit-comment-button" type="submit">Submit Comment</button>
-</form> {% endcomment %}
 
 
-
-
-
-
-    <h2 class="fs-2 fw-semibold mt-4">Comments ({{ comments|length }})</h2>
+    <h2 class="fs-2 fw-semibold mt-4">Comments ({{ youtube_comments|length }})</h2>
+    {% if youtube_comments|length > 0 %}
     <!-- Display Comments with Pagination -->
     <ul>
-        {% for comment in comments %}
+        {% for comment in youtube_comments %}
             <div class="comment-container">
-                {% if comment.username %}
-                <span class="comment-username fs-4 fw-semibold">{{ comment.username }}</span>
-                {% endif %}
+                <span class="comment-username fs-4 fw-semibold">{{ comment.authorDisplayName }}</span>
                 <p class="comment-text fw-medium">{{ comment.text }}</p>
             </div>
         {% endfor %}
     </ul>
-    
+{% else %}
+    <p>No comments available. <a href="https://www.youtube.com/embed/{{ video_id }}" target="_blank">Go to this link on YouTube to comment</a></p>
+{% endif %}
+
+
+
 
 </div>
 </div>

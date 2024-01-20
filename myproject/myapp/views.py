@@ -165,6 +165,22 @@ def video_player(request, video_id):
     thumbnail_url = video['snippet']['thumbnails']['default']['url']
     duration = video['contentDetails']['duration']
 
+    # Fetch YouTube comments
+    comments_response = youtube.commentThreads().list(
+        part="snippet",
+        videoId=video_id,
+        textFormat="plainText"
+    ).execute()
+
+    youtube_comments = []
+    for comment in comments_response.get("items", []):
+        comment_data = {
+            'text': comment["snippet"]["topLevelComment"]["snippet"]["textDisplay"],
+            'authorDisplayName': comment["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"],
+        }
+        youtube_comments.append(comment_data)
+
+
     context = {
         'video': video,
         'title': title,
@@ -172,6 +188,7 @@ def video_player(request, video_id):
         'thumbnail_url': thumbnail_url,
         'video_id': video_id,
         'duration': duration,
+        'youtube_comments': youtube_comments,
     }
 
     return render(request, 'video_player.html', context)
