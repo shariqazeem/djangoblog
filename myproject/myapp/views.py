@@ -130,7 +130,7 @@ def playlist_videos(request, playlist_id):
         snippet = item['snippet']
         title = snippet['title']
         description = snippet['description']
-        thumbnail_url = snippet['thumbnails']['high']['url']
+        thumbnail_url = snippet['thumbnails'].get('high', {}).get('url', '')
         video_id = snippet['resourceId']['videoId']
 
         video = {
